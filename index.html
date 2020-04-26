@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Download Cursos</title>
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+  </head>
+  <body>
+    <div>
+      <h1>
+        Funcional no https://www.sharecursos.com, https://downloadcursos.net
+      </h1>
+      <div>
+        <h2>senhas</h2>
+        <span>sharecursos.com</span>,
+        <span>ConhecimentoLivre</span>
+      </div>
+      <input
+        type="text"
+        id="link"
+        style="width: 809px;"
+        value="https://downloadcursos.net/curso-completo-profissionais-linux-express-standard-advanced-expert-bonus/"
+      />
+      <button type="button" id="obter">Obter Links</button>
+    </div>
+    <div id="links"></div>
+    <h1>Original</h1>
+    <div id="linksOriginal"></div>
+    <script>
+      $("#obter").click(function () {
+        var link = $("#link").val();
+
+        var headers = new Headers();
+        fetch(link, {
+          method: "GET",
+          headers: headers,
+          redirect: "follow",
+        })
+          .then((response) => response.text())
+          .then((result) => {
+            $("#links").empty();
+            $("#linksOriginal").empty();
+            if (link.includes("https://downloadcursos.net"))
+              downloadCursos(result);
+            else if (link.includes("https://www.sharecursos.com"))
+              shareCursos(result);
+
+            // $(result)
+            //   .find("div.DivLinkConverter a[href*='https://drive.google.com']")
+            //   .each(function(index, ele) {
+            //     var url = $($(this)[0]).attr("href");
+            //     if (url.includes("https://drive.google.com")) {
+            //       const spl = url.split("/");
+            //       const token = spl[spl.length - 2];
+
+            //       const urlFinal = `https://drive.google.com/uc?export=download&confirm=BoaT&id=${token}`;
+            //       $("#links").append(
+            //         `<a href="${urlFinal}" target="_blank">Parte ${index +
+            //           1}</a><br/>`
+            //       );
+
+            //       $("#linksOriginal").append(
+            //         `<a href="${url}" target="_blank">Parte ${index +
+            //           1}</a><br/>`
+            //       );
+            //     }
+            //   });
+          })
+          .catch((error) => console.log("error", error));
+      });
+
+      function downloadCursos(result) {
+        $(result)
+          .find("div.DivLinkConverter a[href*='https://drive.google.com']")
+          .each(function (index, ele) {
+            var url = $($(this)[0]).attr("href");
+            if (url.includes("https://drive.google.com")) {
+              const spl = url.split("/");
+              const token = spl[spl.length - 2];
+
+              const urlFinal = `https://drive.google.com/uc?export=download&confirm=BoaT&id=${token}`;
+              $("#links").append(
+                `<a href="${urlFinal}" target="_blank">Parte ${
+                  index + 1
+                }</a><br/>`
+              );
+
+              $("#linksOriginal").append(
+                `<a href="${url}" target="_blank">Parte ${index + 1}</a><br/>`
+              );
+            }
+          });
+      }
+      function shareCursos(result) {
+        $(result)
+          .find("#div_lks_dwnld a")
+          .each(function (index, ele) {
+            var url = $($(this)[0]).attr("href");
+            const spl = url.split("/");
+            const token = spl[spl.length - 2];
+
+            const urlFinal = `https://drive.google.com/uc?export=download&confirm=BoaT&id=${token}`;
+
+            $("#links").append(
+              `<a href="${urlFinal}" target="_blank">Parte ${
+                index + 1
+              }</a><br/>`
+            );
+
+            $("#linksOriginal").append(
+              `<a href="${url}" target="_blank">Parte ${index + 1}</a><br/>`
+            );
+          });
+      }
+
+      // setInterval(function () {
+      //   jQuery(".bottompanel button")[1].click();
+      //   jQuery(".mat-menu-content button")[0].click();
+      //   setTimeout(function () {
+      //     jQuery(
+      //       ".mat-dialog-actions .mat-primary .mat-button-wrapper"
+      //     ).click();
+      //   }, 2000);
+      // }, 5000);
+
+      // const urls = [];
+      // urls.forEach(item => {
+      //   var myHeaders = new Headers();
+      //   var formdata = new FormData();
+      //   formdata.append("url", item);
+
+      //   var requestOptions = {
+      //     method: "POST",
+      //     headers: myHeaders,
+      //     body: formdata,
+      //     redirect: "follow"
+      //   };
+
+      //   fetch("http://retrolink.com.br/api/", requestOptions)
+      //     .then(response => response.text())
+      //     .then(result => {
+      //       const url = $($(result).find(".urldownload")[0]).attr("href");
+      //       const spl = url.split("/");
+      //       const token = spl[spl.length - 2];
+
+      //       const urlFinal = `https://drive.google.com/uc?export=download&confirm=BoaT&id=${token}`;
+      //       $("#links").append(
+      //         `<a href="${urlFinal}" target="_blank">${urlFinal}</a><br/>`
+      //       );
+      //       console.log(token);
+      //     })
+      //     .catch(error => console.log("error", error));
+      // });
+    </script>
+  </body>
+</html>
+
+<!-- jQuery(".bottompanel button")[1].click(); jQuery(".mat-menu-content
+button")[0].click(); jQuery(".mat-dialog-actions .mat-primary
+.mat-button-wrapper").click(); -->
