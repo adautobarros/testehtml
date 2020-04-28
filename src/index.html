@@ -97,7 +97,17 @@
               );
             }
           });
+
+        $(result)
+          .find("div.DivLinkConverter a[href*='magnet:?']")
+          .each(function (index, ele) {
+            var url = $($(this)[0]).attr("href");
+            $("#linksOriginal").append(
+              `<a href="${url}" target="_blank">Magent Downalod</a><br/>`
+            );
+          });
       }
+
       function shareCursos(result) {
         $(result)
           .find("#div_lks_dwnld a")
@@ -116,6 +126,15 @@
 
             $("#linksOriginal").append(
               `<a href="${url}" target="_blank">Parte ${index + 1}</a><br/>`
+            );
+          });
+
+        $(result)
+          .find("div.DivLinkConverter a[href*='magnet:?']")
+          .each(function (index, ele) {
+            var url = $($(this)[0]).attr("href");
+            $("#linksOriginal").append(
+              `<a href="${url}" target="_blank">Magent Downalod</a><br/>`
             );
           });
       }
